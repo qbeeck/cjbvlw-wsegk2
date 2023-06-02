@@ -16,7 +16,7 @@ export class AppComponent {
       childrenItemCategories: [
         {
           id: 15463,
-          name: 'Nori | Subcategory',
+          name: 'Nori 2 | Subcategory',
           order: 1,
           parentId: 15461,
           items: [

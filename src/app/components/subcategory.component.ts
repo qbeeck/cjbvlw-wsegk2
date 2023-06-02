@@ -6,6 +6,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+
 import { Product, SubCategory } from '../interfaces';
 import { ProductComponent } from './product.component';
 
