@@ -1,8 +1,12 @@
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { SubCategory } from '../interfaces';
+import { Product, SubCategory } from '../interfaces';
 import { ProductComponent } from './product.component';
 
 @Component({
@@ -10,7 +14,11 @@ import { ProductComponent } from './product.component';
   standalone: true,
   imports: [CommonModule, ProductComponent, MatIconModule, DragDropModule],
   template: `
-    <div cdkDropList>
+    <div 
+      cdkDropList 
+      [cdkDropListData]="subCategory.items"
+      (cdkDropListDropped)="subcategoryDrop($event)"
+    >
       <mat-icon cdkDragHandle>drag_handle</mat-icon>
       {{ subCategory.name }} || SUBCATEGORY
 
@@ -32,4 +40,12 @@ import { ProductComponent } from './product.component';
 })
 export class SubcategoryComponent {
   @Input() subCategory!: SubCategory;
+
+  subcategoryDrop(event: CdkDragDrop<Product[]>): void {
+    moveItemInArray(
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
 }

@@ -1,6 +1,7 @@
 <div
   cdkDropList
   [cdkDropListData]="catalog"
+  (cdkDropListDropped)="catalogsDropped($event)"
   class="example-headers-align"
   multi
 >
