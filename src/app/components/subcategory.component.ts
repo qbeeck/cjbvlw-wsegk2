@@ -42,6 +42,10 @@ import { ProductComponent } from './product.component';
 export class SubcategoryComponent {
   @Input() subCategory!: SubCategory;
 
+  ngOnInit(): void {
+    console.log(this.subCategory.items);
+  }
+
   subcategoryDrop(event: CdkDragDrop<Product[]>): void {
     moveItemInArray(
       event.container.data,

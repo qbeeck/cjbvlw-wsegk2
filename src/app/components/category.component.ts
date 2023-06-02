@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Category, Product, SubCategory } from '../interfaces';
 import { ProductComponent } from './product.component';
 import { SubcategoryComponent } from './subcategory.component';
+import { TestPipe } from './test.pipe';
 
 @Component({
   selector: 'app-category',
@@ -22,6 +23,7 @@ import { SubcategoryComponent } from './subcategory.component';
     DragDropModule,
     SubcategoryComponent,
     MatExpansionModule,
+    TestPipe,
   ],
   template: `
     <mat-expansion-panel expanded>
@@ -33,12 +35,19 @@ import { SubcategoryComponent } from './subcategory.component';
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <div style="padding-left: 15px" cdkDropList>
+      <div
+        style="padding-left: 15px" 
+        cdkDropList
+        [cdkDropListData]="category.childrenItemCategories | test : category.items"
+        (cdkDropListDropped)="categoryChildrensDrop($event)"
+      >
         <div
           cdkDrag
+          [cdkDragData]="subCategory"
           style="padding-left: 15px"
           *ngFor="let subCategory of category.childrenItemCategories"
         >
+        <span *cdkDragPreview >asdasd</span>
           <hr />
 
           <app-subcategory [subCategory]="subCategory"></app-subcategory>
@@ -48,6 +57,7 @@ import { SubcategoryComponent } from './subcategory.component';
 
         <div
           cdkDrag
+          [cdkDragData]="product"
           style="padding-left: 15px"
           *ngFor="let product of category.items"
         >
@@ -70,16 +80,16 @@ import { SubcategoryComponent } from './subcategory.component';
 export class CategoryComponent {
   @Input() category!: Category;
 
-  dropItems: (SubCategory | Product)[] = [];
+  categoryChildrens: (SubCategory | Product)[] = [];
 
   ngOnInit(): void {
-    this.dropItems = [
+    this.categoryChildrens = [
       ...this.category.childrenItemCategories,
       ...this.category.items,
     ];
   }
 
-  subcategoryDrop(event: CdkDragDrop<(SubCategory | Product)[]>): void {
+  categoryChildrensDrop(event: CdkDragDrop<(SubCategory | Product)[]>): void {
     moveItemInArray(
       event.container.data,
       event.previousIndex,
