@@ -1,9 +1,4 @@
-<div class="example-action-buttons">
-  <button mat-button (click)="accordion.openAll()">Expand All</button>
-  <button mat-button (click)="accordion.closeAll()">Collapse All</button>
-</div>
-
-<mat-accordion
+<div
   cdkDropList
   [cdkDropListData]="catalog"
   class="example-headers-align"
@@ -13,39 +8,33 @@
     <mat-expansion-panel-header>
       <mat-panel-title>
         <mat-icon cdkDragHandle>drag_handle</mat-icon>
-        {{ category.name }}</mat-panel-title
-      >
+
+        {{ category.name }}
+      </mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div
-      cdkDropList
-      id="subCategory-{{ category.id }}"
-      [cdkDropListData]="category.childrenItemCategories"
-      [cdkDropListConnectedTo]="connectDropListCategories(category.childrenItemCategories, category)"
-    >
-      <div cdkDrag *ngFor="let subCategory of category.childrenItemCategories">
-        {{ subCategory.name }}
-        <ul>
-          <li *ngFor="let product of subCategory.items">
-            {{ product.name }}
+    <div style="padding-left: 15px" cdkDropList>
+      <div
+        cdkDrag
+        style="padding-left: 15px"
+        *ngFor="let subCategory of category.childrenItemCategories"
+      >
+        <hr />
 
-            <div *ngFor="let subProduct of product.children">
-              <ul>
-                <li>{{ subProduct.name }}</li>
-              </ul>
-            </div>
-          </li>
-        </ul>
+        <app-subcategory [subCategory]="subCategory"></app-subcategory>
+
+        <hr />
+      </div>
+
+      <div
+        cdkDrag
+        style="padding-left: 15px"
+        *ngFor="let product of category.items"
+      >
+        <hr />
+        <app-product [product]="product"></app-product>
+        <hr />
       </div>
     </div>
-
-    <div *ngFor="let product of category.items">
-      {{ product.name }}
-      <ul>
-        <li *ngFor="let subProduct of product.children">
-          {{ subProduct.name }}
-        </li>
-      </ul>
-    </div>
   </mat-expansion-panel>
-</mat-accordion>
+</div>
