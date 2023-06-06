@@ -7,16 +7,16 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
-import { Product, SubCategory } from '../interfaces';
 import { ProductComponent } from './product.component';
+import { Product, SubCategory } from '../interfaces';
 
 @Component({
   selector: 'app-subcategory',
   standalone: true,
-  imports: [CommonModule, ProductComponent, MatIconModule, DragDropModule],
+  imports: [CommonModule, MatIconModule, DragDropModule, ProductComponent],
   template: `
-    <div 
-      cdkDropList 
+    <div
+      cdkDropList
       [cdkDropListData]="subCategory.items"
       (cdkDropListDropped)="subcategoryDrop($event)"
     >

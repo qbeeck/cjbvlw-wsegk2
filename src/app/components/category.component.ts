@@ -2,28 +2,25 @@ import {
   CdkDragDrop,
   DragDropModule,
   moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
+  transferArrayItem,
+} from "@angular/cdk/drag-drop";
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
+import { MatExpansionModule } from "@angular/material/expansion";
+import { MatIconModule } from "@angular/material/icon";
 
-import { Category, Product, SubCategory } from '../interfaces';
-import { ProductComponent } from './product.component';
-import { SubcategoryComponent } from './subcategory.component';
-import { TestPipe } from './test.pipe';
+import { CategoryChildrenComponent } from "./category-children.component";
+import { Category } from "../interfaces";
 
 @Component({
-  selector: 'app-category',
+  selector: "app-category",
   standalone: true,
   imports: [
     CommonModule,
-    ProductComponent,
     MatIconModule,
     DragDropModule,
-    SubcategoryComponent,
     MatExpansionModule,
-    TestPipe,
+    CategoryChildrenComponent,
   ],
   template: `
     <mat-expansion-panel expanded>
@@ -35,65 +32,63 @@ import { TestPipe } from './test.pipe';
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <div
-        style="padding-left: 15px" 
-        cdkDropList
-        [cdkDropListData]="category.childrenItemCategories | test : category.items"
-        (cdkDropListDropped)="categoryChildrensDrop($event)"
-      >
+      <div style="padding-left: 15px" cdkDropListGroup>
         <div
-          cdkDrag
-          [cdkDragData]="subCategory"
-          style="padding-left: 15px"
-          *ngFor="let subCategory of category.childrenItemCategories"
+          cdkDropList
+          [cdkDropListData]="category.childrenItemCategories"
+          (cdkDropListDropped)="categoryChildrensDrop($event)"
         >
-        <span *cdkDragPreview >asdasd</span>
-          <hr />
-
-          <app-subcategory [subCategory]="subCategory"></app-subcategory>
-
-          <hr />
+          <div
+            cdkDrag
+            style="padding-left: 15px"
+            *ngFor="let subCategory of category.childrenItemCategories"
+          >
+            <app-category-children [item]="subCategory"></app-category-children>
+          </div>
         </div>
 
         <div
-          cdkDrag
-          [cdkDragData]="product"
-          style="padding-left: 15px"
-          *ngFor="let product of category.items"
+          cdkDropList
+          [cdkDropListData]="category.items"
+          (cdkDropListDropped)="categoryChildrensDrop($event)"
         >
-          <hr />
-          <app-product [product]="product"></app-product>
-          <hr />
+          <div
+            cdkDrag
+            style="padding-left: 15px"
+            *ngFor="let product of category.items"
+          >
+            <app-category-children [item]="product"></app-category-children>
+          </div>
         </div>
       </div>
     </mat-expansion-panel>
   `,
   styles: [
     `
-    :host {
-      margin-left: 20px;
-    }
-  `,
+      :host {
+        margin-left: 20px;
+      }
+    `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryComponent {
   @Input() category!: Category;
 
-  categoryChildrens: (SubCategory | Product)[] = [];
-
-  ngOnInit(): void {
-    this.categoryChildrens = [
-      ...this.category.childrenItemCategories,
-      ...this.category.items,
-    ];
-  }
-
-  categoryChildrensDrop(event: CdkDragDrop<(SubCategory | Product)[]>): void {
-    moveItemInArray(
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex
-    );
+  categoryChildrensDrop(event: CdkDragDrop<any[]>): void {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
   }
 }
