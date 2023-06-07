@@ -9,8 +9,9 @@ import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 
-import { CategoryChildrenComponent } from "./category-children.component";
 import { Category } from "../interfaces";
+import { SubcategoryComponent } from "./subcategory.component";
+import { ProductComponent } from "./product.component";
 
 @Component({
   selector: "app-category",
@@ -20,7 +21,8 @@ import { Category } from "../interfaces";
     MatIconModule,
     DragDropModule,
     MatExpansionModule,
-    CategoryChildrenComponent,
+    ProductComponent,
+    SubcategoryComponent,
   ],
   template: `
     <mat-expansion-panel expanded>
@@ -32,33 +34,19 @@ import { Category } from "../interfaces";
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <div style="padding-left: 15px" cdkDropListGroup>
+      <div
+        cdkDropList
+        [cdkDropListData]="items"
+        (cdkDropListDropped)="categoryChildrensDrop($event)"
+      >
         <div
-          cdkDropList
-          [cdkDropListData]="category.childrenItemCategories"
-          (cdkDropListDropped)="categoryChildrensDrop($event)"
+          cdkDrag
+          style="padding-left: 15px"
+          *ngFor="let item of items"
         >
-          <div
-            cdkDrag
-            style="padding-left: 15px"
-            *ngFor="let subCategory of category.childrenItemCategories"
-          >
-            <app-category-children [item]="subCategory"></app-category-children>
-          </div>
-        </div>
+          <app-subcategory *ngIf="item.frontType == 'subcategory'" [subCategory]="item"></app-subcategory>
 
-        <div
-          cdkDropList
-          [cdkDropListData]="category.items"
-          (cdkDropListDropped)="categoryChildrensDrop($event)"
-        >
-          <div
-            cdkDrag
-            style="padding-left: 15px"
-            *ngFor="let product of category.items"
-          >
-            <app-category-children [item]="product"></app-category-children>
-          </div>
+          <app-product *ngIf="item.frontType == 'product'" [product]="item"></app-product>
         </div>
       </div>
     </mat-expansion-panel>
@@ -74,6 +62,15 @@ import { Category } from "../interfaces";
 })
 export class CategoryComponent {
   @Input() category!: Category;
+
+  items: any;
+
+  ngOnInit(): void {
+    this.items = [
+      ...this.category.childrenItemCategories,
+      ...this.category.items,
+    ];
+  }
 
   categoryChildrensDrop(event: CdkDragDrop<any[]>): void {
     if (event.previousContainer === event.container) {

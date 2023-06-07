@@ -4,21 +4,24 @@ import { Category } from "./interfaces";
 
 @Component({
   selector: "app-root",
-  template: `<app-product-catalog [catalog]="catalog"></app-product-catalog>`,
+  template: `
+    <app-product-catalog [catalog]="catalog"></app-product-catalog>
+    <!-- <app-product-catalog-second></app-product-catalog-second> -->
+  `,
 })
 export class AppComponent {
   catalog: Category[] = [
     {
       id: 15461,
       frontType: "category",
-      name: "Sushi | Category",
+      name: "Drinks",
       order: 1,
       parentId: null,
       childrenItemCategories: [
         {
           id: 15462,
           frontType: "subcategory",
-          name: "Nori | Subcategory",
+          name: "Beer",
           order: 1,
           parentId: 15461,
           items: [
@@ -27,7 +30,7 @@ export class AppComponent {
               frontType: "product",
               itemCategoryId: 15462,
               parentId: null,
-              name: "Product #1",
+              name: "Kozel Dark",
               order: 1,
               children: [],
             },
@@ -36,7 +39,7 @@ export class AppComponent {
               frontType: "product",
               itemCategoryId: 15462,
               parentId: null,
-              name: "Product #2",
+              name: "Kozel White",
               order: 2,
               children: [
                 {
@@ -44,8 +47,16 @@ export class AppComponent {
                   frontType: "subproduct",
                   itemCategoryId: null,
                   parentId: 159863,
-                  name: "Subproduct #4",
+                  name: "500ml",
                   order: 1,
+                },
+                {
+                  id: 159866,
+                  frontType: "subproduct",
+                  itemCategoryId: null,
+                  parentId: 159863,
+                  name: "1000ml",
+                  order: 2,
                 },
               ],
             },
@@ -58,7 +69,7 @@ export class AppComponent {
           itemCategoryId: 15461,
           parentId: null,
           frontType: "product",
-          name: "Product #1",
+          name: "Vodka",
           order: 1,
           children: [
             {
@@ -66,7 +77,7 @@ export class AppComponent {
               id: 159862,
               itemCategoryId: null,
               parentId: 159861,
-              name: "asdas | Subproduct #1",
+              name: "50ml",
               order: 1,
             },
             {
@@ -74,7 +85,7 @@ export class AppComponent {
               id: 159863,
               itemCategoryId: null,
               parentId: 159861,
-              name: "another | Subproduct #2",
+              name: "100ml",
               order: 2,
             },
           ],
@@ -84,90 +95,7 @@ export class AppComponent {
           id: 159860,
           itemCategoryId: 15461,
           parentId: null,
-          name: "Product #2",
-          order: 2,
-          children: [],
-        },
-      ],
-    },
-
-    {
-      id: 15461,
-      frontType: "category",
-      name: "Sushi 2 | Category",
-      order: 1,
-      parentId: null,
-      childrenItemCategories: [
-        {
-          id: 15462,
-          frontType: "subcategory",
-          name: "Nori 2 | Subcategory",
-          order: 1,
-          parentId: 15461,
-          items: [
-            {
-              id: 159859,
-              frontType: "product",
-              itemCategoryId: 15462,
-              parentId: null,
-              name: "Product #1 2",
-              order: 1,
-              children: [],
-            },
-            {
-              id: 159863,
-              frontType: "product",
-              itemCategoryId: 15462,
-              parentId: null,
-              name: "Product #2 2",
-              order: 2,
-              children: [
-                {
-                  id: 159864,
-                  frontType: "subproduct",
-                  itemCategoryId: null,
-                  parentId: 159863,
-                  name: "Subproduct #4 2",
-                  order: 1,
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      items: [
-        {
-          id: 159863,
-          itemCategoryId: 15461,
-          parentId: null,
-          frontType: "product",
-          name: "Product #1 2",
-          order: 1,
-          children: [
-            {
-              frontType: "subproduct",
-              id: 159862,
-              itemCategoryId: null,
-              parentId: 159861,
-              name: "asdas | Subproduct #1 2",
-              order: 1,
-            },
-            {
-              frontType: "subproduct",
-              id: 159863,
-              itemCategoryId: null,
-              parentId: 159861,
-              name: "another | Subproduct #2 2",
-              order: 2,
-            },
-          ],
-        },
-        {
-          frontType: "product",
-          id: 159860,
-          itemCategoryId: 15461,
-          parentId: null,
-          name: "Product #2 2",
+          name: "Sprite",
           order: 2,
           children: [],
         },
